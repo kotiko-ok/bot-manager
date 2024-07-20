@@ -33,6 +33,7 @@ import file
 '''
 # print(os.getenv('managebot'))
 
+
 class TGBot:
     def __init__(self):
         self.path = os.path.dirname(__file__)
@@ -45,7 +46,9 @@ class TGBot:
         self.setComandsBot()
 
     def setComandsBot(self):
-        comand = [types.BotCommand("/start", "новая панель"), types.BotCommand("/id", "посмотреть своё id"), types.BotCommand("/help", "информация о боте")]
+        comand = [types.BotCommand("/start", "новая панель"),
+                  types.BotCommand("/id", "посмотреть своё id"),
+                  types.BotCommand("/help", "информация о боте")]
         self.bot.set_my_commands(comand, types.BotCommandScopeDefault())
 
     def editBase(self, key="", data=""):
@@ -171,7 +174,6 @@ class TGBot:
                 case "input": self.bot.send_message(m.message.chat.id, 'send me one symbol ("/", "#", "*") for use key press or click... /help')
                 case "panel":
                     start(m.message)
-                    
                     try:
                         self.bot.delete_message(m.message.chat.id, m.message.message_id)
                     except ApiTelegramException:
