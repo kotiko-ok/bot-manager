@@ -30,7 +30,7 @@ import file
 сделать файл, запускающий последнюю версию файла
 ответ на голосовые команды
 '''
-
+# print(os.getenv('managebot'))
 
 class TGBot:
     def __init__(self):
@@ -38,8 +38,7 @@ class TGBot:
         self.jP = os.path.join
         self.nameBase = self.jP(self.path, 'bace.json')
         self.base = file.readJson(self.nameBase)
-        self.bot = TeleBot(self.base["bot"])
-
+        self.bot = TeleBot(os.getenv('managebot'))
         self.isDefend = False
         self.cmd = False
 

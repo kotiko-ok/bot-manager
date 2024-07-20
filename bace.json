@@ -1,1 +1,13 @@
-{"1127956598": "\u041a\u043e\u0442\u0438\u043a", "admins": {"1682458660": {"notif": false}, "739958383": {"notif": false}}, "bot": "2068551015:AAGcPUVI-rFuzcT84AkuB3NGMlyWMEqRXOg", "help": "Rules of bot\n\nNew comand panel /start\nChek uoy id /id\n\nCommands:\n\nTo send    key , use \"/\" - \"/ctrl\"\nTo press key, use \"*\" - \"*esc\"\nTo release key , use \"#\" - \"#alt\"\nTo write tex use wrise send me text", "": "", "commandOs": {"off": "Shutdown /s /t 20 /c \"\u0431\u043e\u0442 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0435\u0442 \u043a\u043e\u043c\u043f\"", "on": "Shutdown /a", "rel": "Shutdown /r /t 20 /c \"\u0431\u043e\u0442 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u0442 \u043a\u043e\u043c\u043f\"", "offApp": "Shutdown /f", "unlock": "echo 55555 | rundll32.exe user32.dll,LockWorkStation", "sleep": "Shutdown.exe  -r -t 20", "lock": "rundll32.exe user32.dll,LockWorkStation", "#\u0437\u0430\u043f\u0443\u0441\u0442\u0438 \u0441\u0442\u0438\u043c": "E:/Steam/steam.exe", "#\u0437\u0430\u043f\u0443\u0441\u0442\u0438 \u043e\u043f\u0435\u0440\u0443": "C:/Users/kotik/AppData/Local/Programs/\"Opera GX\"/launcher.exe"}}
+{"1127956598": "\u041a\u043e\u0442\u0438\u043a",
+ "admins": {"1682458660": {"notif": false}, "739958383": {"notif": false}},
+ "help": "Rules of bot\n\nNew comand panel /start\nChek uoy id /id\n\nCommands:\n\nTo send    key , use \"/\" - \"/ctrl\"\nTo press key, use \"*\" - \"*esc\"\nTo release key , use \"#\" - \"#alt\"\nTo write tex use wrise send me text",
+ "": "",
+ "commandOs": {"off": "Shutdown /s /t 20 /c \"\u0431\u043e\u0442 \u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0435\u0442 \u043a\u043e\u043c\u043f\"",
+ "on": "Shutdown /a",
+ "rel": "Shutdown /r /t 20 /c \"\u0431\u043e\u0442 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u0442 \u043a\u043e\u043c\u043f\"",
+ "offApp": "Shutdown /f",
+ "unlock": "echo 55555 | rundll32.exe user32.dll,LockWorkStation",
+ "sleep": "Shutdown.exe  -r -t 20",
+ "lock": "rundll32.exe user32.dll,LockWorkStation",
+ "#\u0437\u0430\u043f\u0443\u0441\u0442\u0438 \u0441\u0442\u0438\u043c": "E:/Steam/steam.exe",
+ "#\u0437\u0430\u043f\u0443\u0441\u0442\u0438 \u043e\u043f\u0435\u0440\u0443": "C:/Users/kotik/AppData/Local/Programs/\"Opera GX\"/launcher.exe"}}
