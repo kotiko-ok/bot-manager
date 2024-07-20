@@ -1,5 +1,5 @@
 # standart libraries
-import os, time, keyboard, requests, subprocess, random
+import os, time, keyboard, requests, subprocess, random, pyautogui
 
 # lownloaded libraries
 from telebot import TeleBot, types
@@ -123,6 +123,7 @@ class TGBot:
             btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
             btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
             btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
+            btns.row(self.btn("moltimedia", "moltimedia"))
             self.bot.send_message(message.chat.id, "select app", reply_markup=btns)
 
         @self.bot.message_handler(commands=["help", "id", "cr"])
@@ -169,33 +170,11 @@ class TGBot:
                 case "help": self.bot.send_message(m.message.chat.id, self.base["help"])
                 case "input": self.bot.send_message(m.message.chat.id, 'send me one symbol ("/", "#", "*") for use key press or click... /help')
                 case "panel":
-                    # global isDefend
-                    # isDefend = False
-                    # btns = types.InlineKeyboardMarkup()
-                    # btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
-                    # btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
-                    # btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
-                    # btns.row(self.btn("new panel", "panel"))
-                    # self.nevAnswer(m.message, btns, "select app")
                     start(m.message)
                     try:
                         self.bot.delete_message(m.message.chat.id, m.message.message_id)
                     except ApiTelegramException:
                         self.nevAnswer(m.message, [], "_удалено_")
-                # case "panel":
-                #     start(m.message)
-                #     try:
-                #         self.bot.delete_message(m.message.chat.id, m.message.message_id)
-                #     except ApiTelegramException:
-                #         self.nevAnswer(m.message, [], "_удалено_")
-                    # global isDefend
-                    # isDefend = False
-                    # btns = types.InlineKeyboardMarkup()
-                    # btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
-                    # btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
-                    # btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
-                    # self.bot.send_message(m.message.chat.id, "select app", reply_markup=btns)
-                    # self.bot.delete_message(m.message.chat.id, m.message.message_id)
 
                 case "windows":
                     btns = types.InlineKeyboardMarkup()
@@ -258,12 +237,27 @@ class TGBot:
                     btns.row(self.btn("notify off" if self.base["admins"][str(m.from_user.id)]["notif"] else "notify on", "notify"))
                     btns.row(menu)
                     self.nevAnswer(m.message, btns, "computer")
+
+                case "moltimedia":
+                    btns = types.InlineKeyboardMarkup()
+                    btns.row(self.btn("Play/Pause", "media/playpause"))
+                    btns.row(self.btn("Volume Up", "media/volumeup"), self.btn("Volume Down", "media/volumedown"))
+                    btns.row(self.btn("Previous Track", "media/prevtrack"), self.btn("Next Track", "media/nexttrack"))
+                    btns.row(self.btn("Rewind", "media/rewind"), self.btn("Fast Forward", "media/fastforward"))
+                    btns.row(self.btn("Mute/Unmute", "media/volumemute"))
+                    btns.row(self.btn("Stop", "media/stop"))
+                    btns.row(self.btn("Fullscreen", "media/fullscreen"))
+                    btns.row(menu)
+                    self.nevAnswer(m.message, btns, "multimedia")
+
                 case _:
                     # print(m.data)
                     if not str(m.from_user.id) in self.base["admins"].keys():
                         return
-                    if m.data[0:5] == "comp/":
+                    if m.data[:5] == "comp/":
                         os.system(self.base["commandOs"][m.data[5:]])
+                    elif m.data[:5] == "media":
+                        pyautogui.press(m.data[6:])
                     elif m.data == "/stop":
                         self.stop()
                     elif m.data == "/process":
@@ -295,10 +289,11 @@ class TGBot:
             elif False:
                 pass
             elif message.text in ["/", "#", "*"]:
+                sumbol = message.text
                 btns = types.ReplyKeyboardMarkup()
-                btns.row(types.KeyboardButton(f'{message.text}esc'), types.KeyboardButton(f'{message.text}tab'))
-                btns.row(types.KeyboardButton(f'{message.text}ctrl'), types.KeyboardButton(f'{message.text}alt'))
-                btns.row(types.KeyboardButton(f'{message.text}backspace'), types.KeyboardButton(f'{message.text}shift'))
+                btns.row(types.KeyboardButton(f'{sumbol}esc'), types.KeyboardButton(f'{sumbol}tab'))
+                btns.row(types.KeyboardButton(f'{sumbol}ctrl'), types.KeyboardButton(f'{sumbol}alt'))
+                btns.row(types.KeyboardButton(f'{sumbol}backspace'), types.KeyboardButton(f'{sumbol}shift'))
                 btns.row(types.KeyboardButton('/start'), types.KeyboardButton('/help'))
                 self.bot.send_message(message.chat.id, "use text for mannage computer", reply_markup=btns)
 
