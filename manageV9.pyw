@@ -3,6 +3,7 @@ import os, time, keyboard, requests, subprocess, random
 
 # lownloaded libraries
 from telebot import TeleBot, types
+from telebot.apihelper import ApiTelegramException
 import speech_recognition as sr
 from threading import Thread
 
@@ -41,6 +42,11 @@ class TGBot:
         self.bot = TeleBot(os.getenv('managebot'))
         self.isDefend = False
         self.cmd = False
+        self.setComandsBot()
+
+    def setComandsBot(self):
+        comand = [types.BotCommand("/start", "новая панель"), types.BotCommand("/id", "посмотреть своё id"), types.BotCommand("/help", "информация о боте")]
+        self.bot.set_my_commands(comand, types.BotCommandScopeDefault())
 
     def editBase(self, key="", data=""):
         self.base[key] = data
@@ -110,16 +116,18 @@ class TGBot:
                     self.editBase()
                 print(e)
 
-        @self.bot.message_handler(commands=["start", "help", "id", "cr"])
+        @self.bot.message_handler(commands=["start"])
         def start(message):
+            self.isDefend = True
+            btns = types.InlineKeyboardMarkup()
+            btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
+            btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
+            btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
+            self.bot.send_message(message.chat.id, "select app", reply_markup=btns)
+
+        @self.bot.message_handler(commands=["help", "id", "cr"])
+        def command(message):
             match message.text:
-                case "/start":
-                    self.isDefend = True
-                    btns = types.InlineKeyboardMarkup()
-                    btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
-                    btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
-                    btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
-                    self.bot.send_message(message.chat.id, "select app", reply_markup=btns)
                 case "/help":
                     self.bot.send_message(message.chat.id, self.base["help"])
                 case "/id":
@@ -156,28 +164,38 @@ class TGBot:
 
         @self.bot.callback_query_handler(func=lambda m: True)
         def echoOfComands(m):
+            menu = self.btn("menu", "panel")
             match m.data:
                 case "help": self.bot.send_message(m.message.chat.id, self.base["help"])
                 case "input": self.bot.send_message(m.message.chat.id, 'send me one symbol ("/", "#", "*") for use key press or click... /help')
-                case "menu":
-                    # global isDefend
-                    # isDefend = False
-                    btns = types.InlineKeyboardMarkup()
-                    btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
-                    btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
-                    btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
-                    btns.row(self.btn("new panel", "panel"))
-                    self.nevAnswer(m.message, btns, "select app")
-
                 case "panel":
                     # global isDefend
                     # isDefend = False
-                    btns = types.InlineKeyboardMarkup()
-                    btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
-                    btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
-                    btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
-                    self.bot.send_message(m.message.chat.id, "select app", reply_markup=btns)
-                    self.bot.delete_message(m.message.chat.id, m.message.message_id)
+                    # btns = types.InlineKeyboardMarkup()
+                    # btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
+                    # btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
+                    # btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
+                    # btns.row(self.btn("new panel", "panel"))
+                    # self.nevAnswer(m.message, btns, "select app")
+                    start(m.message)
+                    try:
+                        self.bot.delete_message(m.message.chat.id, m.message.message_id)
+                    except ApiTelegramException:
+                        self.nevAnswer(m.message, [], "_удалено_")
+                # case "panel":
+                #     start(m.message)
+                #     try:
+                #         self.bot.delete_message(m.message.chat.id, m.message.message_id)
+                #     except ApiTelegramException:
+                #         self.nevAnswer(m.message, [], "_удалено_")
+                    # global isDefend
+                    # isDefend = False
+                    # btns = types.InlineKeyboardMarkup()
+                    # btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
+                    # btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
+                    # btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
+                    # self.bot.send_message(m.message.chat.id, "select app", reply_markup=btns)
+                    # self.bot.delete_message(m.message.chat.id, m.message.message_id)
 
                 case "windows":
                     btns = types.InlineKeyboardMarkup()
@@ -185,7 +203,7 @@ class TGBot:
                     btns.row(self.btn("esc", "esc"), self.btn("tab", "tab"), self.btn("switch", "alt + tab"))
                     btns.row(self.btn("enter", "enter"), self.btn("space", "space"), self.btn("processes", "/process"))
 
-                    btns.row(self.btn("menu", "menu"))
+                    btns.row(menu)
                     self.nevAnswer(m.message, btns, "windows")
 
                 case "cs":
@@ -196,7 +214,7 @@ class TGBot:
                     btns.row(self.btn("sit down", "*ctrl"), self.btn("stop", "/stop"), self.btn("jump", "space"))
                     btns.row(self.btn("Global chat", "y"), self.btn("Team chat", "u"), self.btn("enter", "enter"))
                     btns.row(self.btn("use mik", "c"), self.btn("check", "f"), self.btn("roll up", "сtrl + d"))
-                    btns.row(self.btn("menu", "menu"))
+                    btns.row(menu)
                     self.nevAnswer(m.message, btns, "сs")
 
                 case "opera":
@@ -205,7 +223,7 @@ class TGBot:
                     btns.row(self.btn("←", "left"), self.btn("pause", "space"), self.btn("→", "right"))
                     btns.row(self.btn("clear", "backspace"), self.btn("↓", "down"), self.btn("enter", "enter"))
                     btns.row(self.btn("close page", "ctrl + w"), self.btn("open last page", "ctrl + t"))
-                    btns.row(self.btn("menu", "menu"))
+                    btns.row(menu)
                     self.nevAnswer(m.message, btns, "Mannage")
 
                 case "cmd":
@@ -230,7 +248,7 @@ class TGBot:
                     btns.row(self.btn("reload", "comp/rel"), self.btn("exit all app", "comp/offApp"), )
                     btns.row(self.btn("lock", "comp/lock"), self.btn("unlock", "comp/unlock"))
                     btns.row(self.btn("notify off" if self.base["admins"][str(m.from_user.id)]["notif"] else "notify on", "notify"))
-                    btns.row(self.btn("menu", "menu"))
+                    btns.row(menu)
                     self.nevAnswer(m.message, btns, "computer")
                 case "comp":
                     btns = types.InlineKeyboardMarkup()
@@ -238,10 +256,10 @@ class TGBot:
                     btns.row(self.btn("reload", "comp/rel"), self.btn("exit all app", "comp/offApp"), )
                     btns.row(self.btn("lock", "comp/lock"), self.btn("unlock", "comp/unlock"))
                     btns.row(self.btn("notify off" if self.base["admins"][str(m.from_user.id)]["notif"] else "notify on", "notify"))
-                    btns.row(self.btn("menu", "menu"))
+                    btns.row(menu)
                     self.nevAnswer(m.message, btns, "computer")
                 case _:
-                    print(m.data)
+                    # print(m.data)
                     if not str(m.from_user.id) in self.base["admins"].keys():
                         return
                     if m.data[0:5] == "comp/":
