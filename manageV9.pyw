@@ -171,6 +171,7 @@ class TGBot:
                 case "input": self.bot.send_message(m.message.chat.id, 'send me one symbol ("/", "#", "*") for use key press or click... /help')
                 case "panel":
                     start(m.message)
+                    
                     try:
                         self.bot.delete_message(m.message.chat.id, m.message.message_id)
                     except ApiTelegramException:
