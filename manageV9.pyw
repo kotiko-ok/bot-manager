@@ -38,7 +38,7 @@ class TGBot:
     def __init__(self):
         self.path = os.path.dirname(__file__)
         self.jP = os.path.join
-        self.nameBase = self.jP(self.path, 'bace.json')
+        self.nameBase = self.jP(self.path, 'base.json')
         self.base = file.readJson(self.nameBase)
         self.bot = TeleBot(os.getenv('managebot'))
         self.isDefend = False
@@ -46,10 +46,10 @@ class TGBot:
         self.setComandsBot()
 
     def setComandsBot(self):
-        comand = [types.BotCommand("/start", "новая панель"),
-                  types.BotCommand("/id", "посмотреть своё id"),
-                  types.BotCommand("/help", "информация о боте")]
-        self.bot.set_my_commands(comand, types.BotCommandScopeDefault())
+        command = [types.BotCommand("/start", "новая панель"),
+            types.BotCommand("/id", "посмотреть своё id"),
+            types.BotCommand("/help", "информация о боте")]
+        self.bot.set_my_commands(command, types.BotCommandScopeDefault())
 
     def editBase(self, key="", data=""):
         self.base[key] = data
@@ -126,7 +126,7 @@ class TGBot:
             btns.row(self.btn("windows", "windows"), self.btn("computer", "comp"))
             btns.row(self.btn("cs", "cs"), self.btn("opera", "opera"))
             btns.row(self.btn("help", "help"), self.btn("input mode", "input"))
-            btns.row(self.btn("moltimedia", "moltimedia"))
+            btns.row(self.btn("multimedia", "multimedia"))
             self.bot.send_message(message.chat.id, "select app", reply_markup=btns)
 
         @self.bot.message_handler(commands=["help", "id", "cr"])
@@ -181,7 +181,7 @@ class TGBot:
 
                 case "windows":
                     btns = types.InlineKeyboardMarkup()
-                    btns.row(self.btn("ctrl", "*ctrl"), self.btn("alt", "*alt"), self.btn("delite", "del"))
+                    btns.row(self.btn("ctrl", "*ctrl"), self.btn("alt", "*alt"), self.btn("delete", "del"))
                     btns.row(self.btn("esc", "esc"), self.btn("tab", "tab"), self.btn("switch", "alt + tab"))
                     btns.row(self.btn("enter", "enter"), self.btn("space", "space"), self.btn("processes", "/process"))
 
@@ -206,7 +206,7 @@ class TGBot:
                     btns.row(self.btn("clear", "backspace"), self.btn("↓", "down"), self.btn("enter", "enter"))
                     btns.row(self.btn("close page", "ctrl + w"), self.btn("open last page", "ctrl + t"))
                     btns.row(menu)
-                    self.nevAnswer(m.message, btns, "Mannage")
+                    self.nevAnswer(m.message, btns, "Manage")
 
                 case "cmd":
                     self.cmd = True
@@ -241,7 +241,7 @@ class TGBot:
                     btns.row(menu)
                     self.nevAnswer(m.message, btns, "computer")
 
-                case "moltimedia":
+                case "multimedia":
                     btns = types.InlineKeyboardMarkup()
                     btns.row(self.btn("Play/Pause", "media/playpause"))
                     btns.row(self.btn("Volume Up", "media/volumeup"), self.btn("Volume Down", "media/volumedown"))
@@ -292,13 +292,13 @@ class TGBot:
             elif False:
                 pass
             elif message.text in ["/", "#", "*"]:
-                sumbol = message.text
+                symbol = message.text
                 btns = types.ReplyKeyboardMarkup()
-                btns.row(types.KeyboardButton(f'{sumbol}esc'), types.KeyboardButton(f'{sumbol}tab'))
-                btns.row(types.KeyboardButton(f'{sumbol}ctrl'), types.KeyboardButton(f'{sumbol}alt'))
-                btns.row(types.KeyboardButton(f'{sumbol}backspace'), types.KeyboardButton(f'{sumbol}shift'))
+                btns.row(types.KeyboardButton(f'{symbol}esc'), types.KeyboardButton(f'{symbol}tab'))
+                btns.row(types.KeyboardButton(f'{symbol}ctrl'), types.KeyboardButton(f'{symbol}alt'))
+                btns.row(types.KeyboardButton(f'{symbol}backspace'), types.KeyboardButton(f'{symbol}shift'))
                 btns.row(types.KeyboardButton('/start'), types.KeyboardButton('/help'))
-                self.bot.send_message(message.chat.id, "use text for mannage computer", reply_markup=btns)
+                self.bot.send_message(message.chat.id, "use text for manage computer", reply_markup=btns)
 
             else:
                 if not str(message.from_user.id) in self.base["admins"].keys():
