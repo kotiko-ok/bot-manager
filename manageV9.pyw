@@ -1,7 +1,7 @@
-# standart libraries
+# standard libraries
 import os, time, keyboard, requests, subprocess, random, pyautogui
 
-# lownloaded libraries
+# downloaded libraries
 from telebot import TeleBot, types
 from telebot.apihelper import ApiTelegramException
 import speech_recognition as sr
